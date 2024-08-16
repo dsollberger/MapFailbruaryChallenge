@@ -1,0 +1,45 @@
+---
+title: "Map Failbruary Challenge Day 2"
+author: "Derek Sollberger"
+format: 
+  html:
+    toc: true
+date: "2023-02-02"
+---
+
+```{r}
+#| message: false
+#| warning: false
+
+library("sf")
+library("tidyverse")
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# load shape file(s)
+# https://data.cnra.ca.gov/dataset/national-hydrography-dataset-nhd
+rivers_shp <- st_read("data/major_rivers_and_creeks/Major_Rivers_and_Creeks.shp")
+
+# drop Z?
+rivers_shp_2 <- st_zm(rivers_shp)
+
+rivers_subset <- rivers_shp_2 |> sample_n(1000)
+```
+
+
+```{r}
+rivers_subset |>
+  ggplot() +
+  geom_sf(color = "blue") +
+  geom_sf_label(aes(label = gnis_name)) +
+  labs(title = "Calfornia Rivers and Creeks",
+       subtitle = "Map FAILbruary Challenge\nDay 2: In a Hurry",
+       caption = "Data Source: National Hydrography Dataset") +
+  theme(legend.position = "none",
+        legend.title = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        panel.grid.minor = element_blank())
+```
+
